@@ -19,7 +19,7 @@ def change_tor_identity():
     with Controller.from_port(port=9051) as controller:
         controller.authenticate(password="")  # Use a password if set in torrc
         controller.signal(Signal.NEWNYM)
-        #print("Tor identity changed!")
+        print("Tor identity changed!")
 
 
 
@@ -186,7 +186,7 @@ def start_tor():
     #print("Starting Tor...")
     try:
         subprocess.Popen(["tor"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        time.sleep(5)  # Wait for Tor to initialize
+        time.sleep(10)  # Wait for Tor to initialize
         
     except Exception as e:
         print("Error starting Tor:", e)
@@ -246,6 +246,5 @@ if __name__ == "__main__":
             with multiprocessing.Pool(processes=num_workers) as pool:
                 pool.starmap(task, [(i, counter, lock, global_response) for i in batch_tasks])
 
-            # Restart Tor and change identity after processing each batch
-            restart_tor_service()
+            
             change_tor_identity()
